@@ -1,0 +1,70 @@
+openapi: 3.0.0
+
+info:
+  version: 0.1.0
+  title: Rust Rest Server Boilerplate
+  description: |
+    foo
+    bar
+
+servers:
+  - url: http://localhost:3800
+    description: 'Localhost'
+
+tags:
+  - name: Health
+    description: Health-check
+  - name: Connections
+    description: Connections
+
+paths:
+  '/api/health':
+    get:
+      operationId: healthcheck
+      tags:
+        - Health
+      responses:
+        '200':
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                properties:
+                  success:
+                    type: boolean
+
+  '/api/connections':
+    get:
+      operationId: connectionGet
+      tags:
+        - Connections
+      responses:
+        "200":
+          description: Resource found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Connection'
+        "404":
+          description: Resource not found.
+
+components:
+  schemas:
+    ResourceId:
+      properties:
+        id:
+          type: string
+          description: Id of REST Resource
+
+    Connection:
+      description: Connection resource
+      properties:
+        id:
+          description: Id of the Connection resource.
+          type: string
+        title:
+          description: Title of the connection.
+          type: string
+        author:
+          description: Author of the connection.
+          type: string

@@ -1,0 +1,30 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest test/integration"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.26.1",
+    "axios-cookiejar-support": "^1.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "mkdirp": "^1.0.4",
+    "tough-cookie": "^4.0.0"
+  },
+  "devDependencies": {
+    "uuid": "^8.3.2",
+    "@types/jest": "^26.0.14",
+    "jest": "^26.5.2",
+    "dotenv": "^7.0.0",
+    "standard": "^14.3.4",
+    "winston": "^3.1.0",
+    "sleep-promise": "^8.0.1"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
