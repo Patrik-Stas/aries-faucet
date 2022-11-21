@@ -6,7 +6,7 @@ use serde_qs::actix::QsQuery;
 
 use crate::application::Application;
 use crate::application::error::BusinessError;
-use crate::application::storage::connections::Connection;
+use crate::application::storage::connections::ConnectionResource;
 use crate::application::storage::filters::build_label_filter;
 use crate::server::response::{Resp, RespResult};
 

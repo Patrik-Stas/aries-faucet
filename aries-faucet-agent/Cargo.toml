@@ -5,9 +5,12 @@ edition = "2018"
 license-file = "LICENSE"
 
 [dependencies]
-openssl = { version = "0.10", features = ["vendored"] }
+#aries-vcx-agent = { git = "https://github.com/hyperledger/aries-vcx", rev = "75236ac395" } // main + nolibc
+#aries-vcx-agent = { git = "https://github.com/hyperledger/aries-vcx", rev = "53b84a6af2" }
+aries-vcx-agent = { git = "https://github.com/hyperledger/aries-vcx", rev = "3422a09" }
+
 log = "0.4.16"
-env_logger = "0.9.0"
+env_logger = "0.9.3"
 chrono = "0.4.19"
 
 # actix with tokio 1.x
@@ -19,7 +22,7 @@ tokio = { version = "1.17.0", features = ["rt-multi-thread", "macros"] }
 futures = "0.3.21"
 
 bson = "2.1.0"
-mongodb = "2.1.0"
+mongodb = "2.3.1"
 
 lazy_static = "1.4.0"
 

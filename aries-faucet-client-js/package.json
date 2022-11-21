@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "aries-faucet-client-js",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

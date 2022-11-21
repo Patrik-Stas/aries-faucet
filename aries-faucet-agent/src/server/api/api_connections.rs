@@ -6,19 +6,19 @@ use serde_qs::actix::QsQuery;
 
 use crate::application::Application;
 use crate::application::error::BusinessError;
-use crate::application::storage::connections::Connection;
+use crate::application::storage::connections::ConnectionResource;
 use crate::application::storage::filters::build_label_filter;
 use crate::server::response::{Resp, RespResult};
 
 #[derive(Deserialize, Serialize, Debug)]
-pub struct ConnectionResource {
+pub struct ConnectionResourceDto {
     pub(crate) id: String,
     pub(crate) label: String,
 }
 
-impl From<Connection> for ConnectionResource {
-    fn from(connection: Connection) -> Self {
-        ConnectionResource {
+impl From<ConnectionResource> for ConnectionResourceDto {
+    fn from(connection: ConnectionResource) -> Self {
+        ConnectionResourceDto {
             id: connection.id.to_string(),
             label: connection.label,
         }
@@ -33,6 +33,7 @@ pub struct RequestCreateConnection {
 pub async fn create(app_data: web::Data<Application>,
                     req: web::Json<RequestCreateConnection>) -> RespResult {
     let mut resource: RequestCreateConnection = req.into_inner();
+
     let id = app_data.service_connections.create(resource.label).await?;
     Resp::ok(json!({ "id": id })).to_json_result()
 }
@@ -51,7 +52,7 @@ pub async fn get_many(app_data: web::Data<Application>,
                       query: QsQuery<QueryFilterConnections>) -> RespResult {
     let filter = build_label_filter(query.label.clone());
     let list = app_data.service_connections.get_many(filter).await?;
-    let connections: Vec<ConnectionResource> = list.into_iter().map(|b| ConnectionResource::from(b)).collect();
+    let connections: Vec<ConnectionResourceDto> = list.into_iter().map(|b| ConnectionResourceDto::from(b)).collect();
     Resp::ok(connections).to_json_result()
 }
 
@@ -61,7 +62,7 @@ pub async fn get_by_id(app_data: web::Data<Application>,
         .ok_or(anyhow!("api_connections.rs :: get_by_id >> was invoked by id param is missing"))?;
     let connection = app_data.service_connections
         .get_by_id(id).await?;
-    Resp::ok(ConnectionResource::from(connection))
+    Resp::ok(ConnectionResourceDto::from(connection))
         .to_json_result()
 }
 

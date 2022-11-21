@@ -1,7 +1,7 @@
 /* eslint-env jest */
 
 const { loadEnvVariables } = require('../common/config-loader')
-const { createApiClient } = require('../../src')
+const { createApiClient } = require('../../src/client')
 const uuid = require('uuid')
 const logger = require('../common/logger')(__filename)
 

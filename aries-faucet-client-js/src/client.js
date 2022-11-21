@@ -1,5 +1,4 @@
 const axios = require('axios')
-const jwt = require('jsonwebtoken')
 
 function _axiosErrorToString (err) {
   if (err.response) {

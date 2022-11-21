@@ -3,21 +3,21 @@ use bson::{Document, oid::ObjectId};
 use futures::{StreamExt, TryStreamExt};
 use crate::application::error::{BusinessError, BusinessResult};
 
-use crate::application::storage::connections::Connection;
+use crate::application::storage::connections::ConnectionResource;
 use crate::application::storage::db_util::{CursorIntoVec, struct_into_document};
 
 pub struct ServiceConnections {
-    collection_connections: mongodb::Collection<Connection>,
+    collection_connections: mongodb::Collection<ConnectionResource>,
 }
 
 impl ServiceConnections {
-    pub fn new(collection_resources: mongodb::Collection<Connection>) -> ServiceConnections {
+    pub fn new(collection_resources: mongodb::Collection<ConnectionResource>) -> ServiceConnections {
         ServiceConnections { collection_connections: collection_resources }
     }
 
     pub async fn create(&self, label: String) -> BusinessResult<String> {
         log::info!("db_create_resource >> label: {}", label);
-        let connection = Connection {
+        let connection = ConnectionResource {
             id: ObjectId::new(),
             label,
         };
@@ -31,7 +31,7 @@ impl ServiceConnections {
         Ok(inserted_id)
     }
 
-    pub(crate) async fn get_many(&self, filter: Document) -> BusinessResult<Vec<Connection>> {
+    pub(crate) async fn get_many(&self, filter: Document) -> BusinessResult<Vec<ConnectionResource>> {
         let mut cursor = self.collection_connections.find(Some(filter), None).await
             .map_err(|e| anyhow!("service_connections::get_many >> failed document find, root cause: {}", e.to_string()))?;
         let mut connections = vec![];
@@ -42,7 +42,7 @@ impl ServiceConnections {
         return Ok(connections);
     }
 
-    pub(crate) async fn get_by_id(&self, id: &str) -> BusinessResult<Connection> {
+    pub(crate) async fn get_by_id(&self, id: &str) -> BusinessResult<ConnectionResource> {
         let result = self.collection_connections
             .find_one(Some(doc! {"_id": ObjectId::parse_str(&id).unwrap() }), None).await
             .map_err(|e| anyhow!("service_connections::get_by_id >> failed document find, root cause: {}", e.to_string()))?
@@ -83,7 +83,7 @@ mod tests {
     use uuid::Uuid;
 
     use crate::application::service::service_connections::ServiceConnections;
-    use crate::application::storage::connections::Connection;
+    use crate::application::storage::connections::ConnectionResource;
     use crate::application::storage::build_mongodb_client;
 
     struct IntegrationTest {
@@ -101,7 +101,7 @@ mod tests {
         let mongo_client = build_mongodb_client("mongodb://localhost:27017").await.unwrap();
         let database_name = Uuid::new_v4().to_string();
         let mongo_database = mongo_client.database(&database_name);
-        let collection_connections = mongo_database.collection(Connection::COLLECTION_NAME);
+        let collection_connections = mongo_database.collection(ConnectionResource::COLLECTION_NAME);
         IntegrationTest {
             mongo_database,
             service_connections: ServiceConnections::new(collection_connections),

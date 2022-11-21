@@ -36,6 +36,8 @@ pub struct AppEnvConfig {
     pub enable_tls: bool,
     #[envconfig(from = "BINDING_ADDRESS")]
     pub binding_address: String,
+    #[envconfig(from = "GENESIS_PATH")]
+    pub genesis_path: String,
     #[envconfig(from = "SERVER_WORKERS", default = "4")]
     pub server_workers: usize,
     #[envconfig(from = "GRACEFUL_SHUTDOWN_TIMEOUT_SEC", default = "20")]
