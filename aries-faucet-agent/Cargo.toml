@@ -5,8 +5,6 @@ edition = "2018"
 license-file = "LICENSE"
 
 [dependencies]
-#aries-vcx-agent = { git = "https://github.com/hyperledger/aries-vcx", rev = "75236ac395" } // main + nolibc
-#aries-vcx-agent = { git = "https://github.com/hyperledger/aries-vcx", rev = "53b84a6af2" }
 aries-vcx-agent = { git = "https://github.com/hyperledger/aries-vcx", rev = "3422a09" }
 
 log = "0.4.16"

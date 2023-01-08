@@ -1,4 +1,5 @@
 use std::{fs::File, io::BufReader};
+use std::sync::Arc;
 use std::time::Duration;
 
 use actix_web::{App, HttpServer, middleware, web};
@@ -9,6 +10,7 @@ use rustls::{Certificate, PrivateKey, ServerConfig};
 use rustls_pemfile::{certs, pkcs8_private_keys};
 use actix_cors::Cors;
 use actix_web::dev::AppConfig;
+use aries_vcx_agent::Agent;
 
 use crate::application::build_application;
 use crate::config::AppEnvConfig;
@@ -47,7 +49,7 @@ fn load_rustls_config() -> rustls::ServerConfig {
     config.with_single_cert(cert_chain, keys.remove(0)).unwrap()
 }
 
-pub async fn start_server(app_config: AppEnvConfig) -> std::io::Result<()> {
+pub async fn start_server(app_config: AppEnvConfig, agent: Arc<Agent>) -> std::io::Result<()> {
     let app_config_cl = app_config.clone();
     let mut server = HttpServer::new(move ||
         {
